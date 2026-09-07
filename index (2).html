@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogórczak & My – Nasza Historia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --minecraft-green: #5d8c3e;
+            --minecraft-dark-green: #3a5f2a;
+            --soft-pink: #ff9eb5;
+            --warm-gold: #f0c75e;
+            --night-bg: #1a1f2e;
+            --card-bg: rgba(45, 55, 70, 0.85);
+            --text-light: #f5f0e6;
+            --accent: #ff6b8a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, #0f1520 0%, #1a2a1f 40%, #2d3b2a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Delikatne gwiazdki w tle */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 160px 120px, #fff, transparent);
+            background-size: 200px 200px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== NAGŁÓWEK ===== */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.1rem, 4vw, 1.6rem);
+            color: var(--warm-gold);
+            text-shadow: 3px 3px 0 #3a2a0a, 0 0 20px rgba(240, 199, 94, 0.4);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--soft-pink);
+            margin-bottom: 30px;
+        }
+
+        /* ===== OGÓRCZAK ===== */
+        .ogorczak-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 220px;
+            margin: 20px 0 30px;
+            position: relative;
+        }
+
+        .ogorczak {
+            width: 120px;
+            height: auto;
+            image-rendering: pixelated;
+            animation: bounce 1.8s ease-in-out infinite, walk 6s ease-in-out infinite;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .ogorczak:hover {
+            transform: scale(1.08);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-18px); }
+        }
+
+        @keyframes walk {
+            0%, 100% { margin-left: 0; }
+            25% { margin-left: 40px; }
+            75% { margin-left: -40px; }
+        }
+
+        .hearts {
+            position: absolute;
+            top: 10px;
+            font-size: 1.4rem;
+            animation: float-heart 3s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        .hearts:nth-child(2) { left: 30%; animation-delay: 0.5s; }
+        .hearts:nth-child(3) { right: 30%; animation-delay: 1.2s; }
+
+        @keyframes float-heart {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-25px) scale(1.2); opacity: 1; }
+        }
+
+        /* ===== LICZNIK ===== */
+        .counter-section {
+            background: var(--card-bg);
+            border: 3px solid var(--minecraft-green);
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 0 0 4px rgba(93, 140, 62, 0.3), 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .counter-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            color: var(--soft-pink);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .time-box {
+            background: linear-gradient(145deg, #2a3a2a, #1e2a1e);
+            border: 2px solid var(--minecraft-green);
+            border-radius: 8px;
+            padding: 12px 10px;
+            min-width: 70px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+        }
+
+        .time-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.3rem;
+            color: var(--warm-gold);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            color: #a8c49a;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
+        /* ===== SEKCJE ===== */
+        section {
+            background: var(--card-bg);
+            border: 2px solid var(--minecraft-dark-green);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.95rem;
+            color: var(--warm-gold);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '❤';
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .story-text {
+            line-height: 1.7;
+            font-size: 1.05rem;
+            color: #e8e0d5;
+        }
+
+        .story-text p {
+            margin-bottom: 15px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--minecraft-green), var(--soft-pink));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--warm-gold);
+            border: 3px solid var(--minecraft-green);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(240, 199, 94, 0.5);
+        }
+
+        .timeline-date {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--soft-pink);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1rem;
+            color: #e0d8cc;
+        }
+
+        /* ===== GALERIA ===== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #2a3a2a, #1e2a1e);
+            border: 3px solid var(--minecraft-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7a9a6a;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--soft-pink);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 158, 181, 0.25);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: auto;
+        }
+
+        /* ===== STOPKA ===== */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+            color: #8a9a7a;
+        }
+
+        footer .heart {
+            color: var(--accent);
+        }
+
+        /* Responsywność */
+        @media (max-width: 600px) {
+            .time-box {
+                min-width: 60px;
+                padding: 10px 6px;
+            }
+            .time-value {
+                font-size: 1.1rem;
+            }
+            .ogorczak {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ogórczak & My<br>– Nasza Historia</h1>
+            <p class="subtitle">od 14 lipca 2026 • Survival Mode: Love</p>
+
+            <div class="ogorczak-wrapper">
+                <span class="hearts">💚</span>
+                <span class="hearts">❤️</span>
+                <span class="hearts">💚</span>
+                <img src="ogorczak.jpg" alt="Ogórczak – nasza maskotka" class="ogorczak" id="ogorczak" title="Kliknij mnie!">
+            </div>
+        </header>
+
+        <!-- LICZNIK -->
+        <div class="counter-section">
+            <div class="counter-title">Jesteśmy razem już...</div>
+            <div class="counter" id="counter">
+                <div class="time-box">
+                    <span class="time-value" id="days">0</span>
+                    <div class="time-label">dni</div>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="hours">0</span>
+                    <div class="time-label">godz</div>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="minutes">0</span>
+                    <div class="time-label">min</div>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="seconds">0</span>
+                    <div class="time-label">sek</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HISTORIA -->
+        <section id="historia">
+            <h2>Nasza Historia</h2>
+            <div class="story-text">
+                <p>Tu wpisz swoją historię z Marcinem. Możesz pisać ile chcesz – jak się poznaliście, pierwsze wspólne chwile, co sprawia, że ten związek jest wyjątkowy.</p>
+                <p>Po prostu otwórz ten plik w Notatniku (lub dowolnym edytorze tekstu), znajdź ten tekst i zamień na swój. Zapisz i odśwież stronę.</p>
+                <p><em>Przykład: 14 lipca 2026 roku wszystko się zaczęło. Od tamtej pory Ogórczak jest świadkiem naszej miłości...</em></p>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section id="timeline">
+            <h2>Nasze Kamienie Milowe</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">14.07.2026</div>
+                    <div class="timeline-content">Początek naszej historii 💚</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Dodaj datę</div>
+                    <div class="timeline-content">Tu wpisz kolejne ważne wydarzenie (pierwsze spotkanie, wyjazd, coś specjalnego...)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Dodaj datę</div>
+                    <div class="timeline-content">Kolejne wspomnienie – możesz dodawać ile chcesz, po prostu kopiuj cały ten blok „timeline-item”.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERIA -->
+        <section id="galeria">
+            <h2>Nasze Wspomnienia</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <span>Dodaj zdjęcie<br>1</span>
+                </div>
+                <div class="gallery-item">
+                    <span>Dodaj zdjęcie<br>2</span>
+                </div>
+                <div class="gallery-item">
+                    <span>Dodaj zdjęcie<br>3</span>
+                </div>
+                <div class="gallery-item">
+                    <span>Dodaj zdjęcie<br>4</span>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #8a9a7a;">
+                Żeby dodać zdjęcie: wrzuć plik (np. zdjecie1.jpg) do tego samego folderu co index.html, 
+                a potem w kodzie zamień tekst „Dodaj zdjęcie” na &lt;img src="zdjecie1.jpg" alt="opis"&gt;
+            </p>
+        </section>
+
+        <footer>
+            <p>Zrobione z <span class="heart">❤️</span> dla Marcina i Ogórczaka</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">Survival Mode: Love • od 14 lipca 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data rozpoczęcia związku
+        const startDate = new Date('2026-07-14T00:00:00');
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // Odświeżaj co sekundę
+        updateCounter();
+        setInterval(updateCounter, 1000);
+
+        // Mały easter egg – kliknięcie w Ogórczaka
+        document.getElementById('ogorczak').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'bounce 0.4s ease-in-out 3, walk 6s ease-in-out infinite';
+            }, 10);
+            
+            // Małe serduszko przy kliknięciu
+            const heart = document.createElement('span');
+            heart.textContent = '💚';
+            heart.style.position = 'absolute';
+            heart.style.fontSize = '1.8rem';
+            heart.style.left = (50 + Math.random() * 20 - 10) + '%';
+            heart.style.top = '40%';
+            heart.style.animation = 'float-heart 1.5s ease-out forwards';
+            heart.style.pointerEvents = 'none';
+            document.querySelector('.ogorczak-wrapper').appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
+        });
+    </script>
+</body>
+</html>
